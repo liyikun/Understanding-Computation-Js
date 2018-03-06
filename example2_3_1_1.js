@@ -54,9 +54,9 @@ class Multiply {
     }
     reduce () {
         if(this.left.reducible()){
-            return new Add(this.left.reduce(), this.right)
+            return new Multiply(this.left.reduce(), this.right)
         } else if (this.right.reducible()) {
-            return new Add(this.left, this.right.reduce())
+            return new Multiply(this.left, this.right.reduce())
         } else {
             return new D_Number(this.left.value * this.right.value)
         }
