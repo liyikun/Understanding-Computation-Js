@@ -54,21 +54,31 @@ class DFA {
     read_character(character) {
         this.current_state = rulebook.next_state(this.current_state, character)
     }
+    read_string(string) {
+        string.split('').forEach(character => {
+            this.read_character(character)
+        })
+    }
 }
 
 // console.log(new DFA(1, [1, 3], rulebook).accepting())
 
 const dfa = new DFA(1, [3], rulebook)
 
-dfa.read_character('b')
-console.log(dfa.accepting())
-const rundo = [1,2,3];
-rundo.forEach(e => {
-    dfa.read_character('a')
-});
-console.log(dfa.accepting())
-dfa.read_character('b')
+// dfa.read_character('b')
+// console.log(dfa.accepting())
+// const rundo = [1,2,3];
+// rundo.forEach(e => {
+//     dfa.read_character('a')
+// });
+// console.log(dfa.accepting())
+// dfa.read_character('b')
 
+// console.log(dfa.accepting())
+
+
+//test read_string
+dfa.read_string('baaab');
 console.log(dfa.accepting())
 
 

@@ -1,0 +1,8 @@
+{
+  "name": "",
+  "description": "MIT",
+  "version": "",
+  "dependencies": {
+    "lodash": "^4.17.5"
+  }
+}
