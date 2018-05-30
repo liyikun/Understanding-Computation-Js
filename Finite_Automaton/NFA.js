@@ -1,5 +1,14 @@
 const _ = require("lodash")
 
+Object.defineProperty(Object.prototype, 'tap', {
+    value : function(intercept) {  
+      intercept.call(this);  
+      return this; 
+    },
+    enumerable : false
+  });
+  
+
 Set.prototype.subset = function (otherSet) {  
     if (this.size > otherSet.size) {  
         return false;  
@@ -67,18 +76,18 @@ const rulebook = new NFARuleBook([
 ])
 
 // const list1 = new Set([1])
-console.log(rulebook.next_states([1], 'b'))
+// console.log(rulebook.next_states([1], 'b'))
 
 
-console.log(rulebook.next_states([1, 2], 'a'))
+// console.log(rulebook.next_states([1, 2], 'a'))
 
-console.log(rulebook.next_states([1, 3], 'b'))
+// console.log(rulebook.next_states([1, 3], 'b'))
 
 
 
 class NFA {
     constructor(current_state, accept_state, rulebook) {
-        this.current_state = current_state;
+        this.current_state = [...rulebook.follow_free_moves(current_state).values()];
         this.accept_state = accept_state;
         this.rulebook = rulebook;
     }
@@ -89,9 +98,9 @@ class NFA {
         return this.current_state = Array.from(this.rulebook.next_states(this.current_state, character))
     }
     read_string(string) {
-        return string.forEach(character => {
-            return this.read_character(character)
-        })
+        for(let character of string) {
+            this.read_character(character)
+        }
     }
 }
 
@@ -113,6 +122,30 @@ const rulebook2 = new NFARuleBook([
     new FARule(6, 'a', 4)
 ])
 
-console.log(...rulebook2.next_states([1], null).values())
+// console.log(...rulebook2.next_states([1], null).values())
 
-console.log(...rulebook2.follow_free_moves([1]).values())
+// console.log(...rulebook2.follow_free_moves([1]).values())
+
+
+class NfaDesign {
+    constructor(start_state,accept_state,rulebook) {
+        this.start_state = start_state;
+        this.accept_state = accept_state;
+        this.rulebook = rulebook;
+    }
+    accept(string) {
+        return this.to_nfa().tap(function() {
+            this.read_string(string)
+        }).accepting()
+    }
+    to_nfa() {
+        return new NFA(this.start_state, this.accept_state, this.rulebook)
+    }
+}
+
+const nfadesign = new NfaDesign([1], [2,4], rulebook2)
+
+console.log(nfadesign.accept('aa'))
+console.log(nfadesign.accept('aaa'))
+console.log(nfadesign.accept('aaaaa'))
+console.log(nfadesign.accept('aaaaaa'))
