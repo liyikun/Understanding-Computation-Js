@@ -149,3 +149,5 @@ console.log(nfadesign.accept('aa'))
 console.log(nfadesign.accept('aaa'))
 console.log(nfadesign.accept('aaaaa'))
 console.log(nfadesign.accept('aaaaaa'))
+
+
