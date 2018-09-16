@@ -12,7 +12,6 @@ class D_Number {
         return false
     }
 }
-
 class Add {
     constructor(left, right) {
         this.left = left;
